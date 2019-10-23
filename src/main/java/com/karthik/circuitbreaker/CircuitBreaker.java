@@ -18,17 +18,18 @@ public class CircuitBreaker<I, O> {
 	public CircuitBreaker(int threshold, long timeoutSeconds) {
 		this.threshold = threshold;
 		this.timeoutSeconds = timeoutSeconds;
+		this.currentState.set(State.CLOSED);
 	}
 	
 	public O execute(Function<I, O> function, I input) throws CircuitBreakerOpenException {
-		if (currentFailures.get() >= threshold) {
+		if (currentState.get() == State.OPEN) {
 			throw new CircuitBreakerOpenException();
 		}
 
 		O result = null;
 		try {
 			result = function.apply(input);
-			if (currentState.compareAndSet(State.HALF_OPEN, State.OPEN)) {
+			if (currentState.compareAndSet(State.HALF_OPEN, State.CLOSED)) {
 				currentFailures.set(0);
 			}
 		} catch (Exception ex) {

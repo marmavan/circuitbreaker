@@ -16,7 +16,6 @@ public class TimeoutThread extends Thread {
 	public void run() {
 		try {
 			Thread.sleep(TimeUnit.SECONDS.toMillis(timeoutSeconds));
-			breaker.getCurrentFailures().decrementAndGet();
 			breaker.getCurrentState().set(com.karthik.circuitbreaker.State.HALF_OPEN);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

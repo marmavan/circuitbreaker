@@ -56,7 +56,7 @@ public class CircuitBreakerIntegrationTest {
 				throw new RuntimeException();
 			}, "hello");
 		}
-		Thread.sleep(10000);
+		Thread.sleep(11000);
 		cb.execute((str) -> {
 			return str;
 		}, "hello");
@@ -74,7 +74,7 @@ public class CircuitBreakerIntegrationTest {
 		} catch (Exception e) {
 			System.out.println("hi");
 		}
-		Thread.sleep(10000);
+		Thread.sleep(11000);
 		cb.execute((str) -> {
 			return str;
 		}, "hello");
